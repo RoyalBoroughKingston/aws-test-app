@@ -56,7 +56,7 @@ jobs:
       run: aws s3 rm s3://ddt-build-files/aws-test-app/${ENV_NAME} --recursive --exclude "*" --include "*.zip"
     
     - name: Upload zip file to S3 bucket
-      run: aws s3 cp ./artifact/publish.zip s3://ddt-build-files/aws-test-app/${ENV_NAME}/lambda-${{ github.run_number }}.zip
+      run: aws s3 cp ./artifact/publish.zip s3://ddt-build-files/aws-test-app/${ENV_NAME}/publish-${{ github.run_number }}.zip
       
     
   deploy:
