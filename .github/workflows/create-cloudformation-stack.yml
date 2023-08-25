@@ -33,7 +33,7 @@ jobs:
       working-directory: artifact/publish
 
     - name: Copy Cloudformation template file
-      run: cp ./template.yml ./artifact/template.yml
+      run: cp ./deployment.yml ./artifact/deployment.yml
 
     - name: Upload build application files
       uses: actions/upload-artifact@v3
