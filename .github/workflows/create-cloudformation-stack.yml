@@ -6,13 +6,14 @@ on:
       - develop
       - master
 
+env:
+  ENV_NAME: ${{ github.ref == 'refs/heads/develop' && 'development' || 'production' }}
+  APPSETTINGS_FILE: ${{ env.ENV_NAME == 'development' && 'appsettings.Development.json' || 'appsettings.Production.json' }}
+
 jobs:
   build:
     runs-on: ubuntu-latest
-    env:
-      ENV_NAME: ${{ github.ref == 'refs/heads/develop' && 'development' || 'production' }}
-      APPSETTINGS_FILE: ${{ env.ENV_NAME == 'development' && 'appsettings.Development.json' || 'appsettings.Production.json' }}
-
+    
     steps:
     - name: Checkout code
       uses: actions/checkout@v3
