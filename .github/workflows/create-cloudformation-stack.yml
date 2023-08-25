@@ -36,7 +36,7 @@ jobs:
       run: cp ./template.yml ./artifact/template.yml
 
     - name: Upload build application files
-    - uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v3
       with:
         name: publish
         path: ./artifact
@@ -61,7 +61,7 @@ jobs:
 
     steps:  
     - name: Download build application files
-    - uses: actions/download-artifact@v3
+      uses: actions/download-artifact@v3
       with:
         name: publish
         path: artifact
