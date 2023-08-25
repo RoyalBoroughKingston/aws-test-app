@@ -36,7 +36,7 @@ Resources:
   AspNetCoreFunction:
     Type: AWS::Serverless::Function
     Properties:
-      Handler: aws-api
+      Handler: aws-test-app
       Runtime: dotnet6
       Environment:
         Variables:
