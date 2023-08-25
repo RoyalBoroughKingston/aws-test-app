@@ -8,7 +8,6 @@ on:
 
 env:
   ENV_NAME: ${{ github.ref == 'refs/heads/develop' && 'development' || 'production' }}
-  APPSETTINGS_FILE: ${{ env.ENV_NAME == 'development' && 'appsettings.Development.json' || 'appsettings.Production.json' }}
 
 jobs:
   build:
