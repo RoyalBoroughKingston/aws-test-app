@@ -6,6 +6,10 @@ on:
       - develop
       - master
 
+permissions:
+  id-token: write # This is required for requesting the JWT to connect Github to AWS
+  contents: read  # This is required for actions / checkout
+
 env:
   ENV_NAME: ${{ github.ref == 'refs/heads/develop' && 'development' || 'production' }}
 
