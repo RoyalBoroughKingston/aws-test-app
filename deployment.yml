@@ -18,7 +18,7 @@ Parameters:
     Default: 'aws-test-app/development/lambda.zip'
 
 Resources:
-  AspNetCoreIamRole:
+  TestAspNetCoreIamRole:
     Type: AWS::IAM::Role
     Properties:
       AssumeRolePolicyDocument:
@@ -46,7 +46,7 @@ Resources:
         Key: !Ref Key
       MemorySize: 256
       Timeout: 30
-      Role: !GetAtt AspNetCoreIamRole.Arn
+      Role: !GetAtt TestAspNetCoreIamRole.Arn
       Events:
         ProxyResource:
           Type: Api
