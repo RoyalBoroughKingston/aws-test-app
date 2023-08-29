@@ -6,13 +6,17 @@ on:
       - develop
       - master
 
+permissions:
+  id-token: write # This is required for requesting the JWT to connect Github to AWS
+  contents: read  # This is required for actions / checkout
+
+env:
+  ENV_NAME: ${{ github.ref == 'refs/heads/develop' && 'development' || 'production' }}
+
 jobs:
   build:
     runs-on: ubuntu-latest
-    env:
-      ENV_NAME: ${{ github.ref == 'refs/heads/develop' && 'development' || 'production' }}
-      APPSETTINGS_FILE: ${{ env.ENV_NAME == 'development' && 'appsettings.Development.json' || 'appsettings.Production.json' }}
-
+    
     steps:
     - name: Checkout code
       uses: actions/checkout@v3
@@ -33,10 +37,10 @@ jobs:
       working-directory: artifact/publish
 
     - name: Copy Cloudformation template file
-      run: cp ./template.yml ./artifact/template.yml
+      run: cp ./deployment.yml ./artifact/deployment.yml
 
     - name: Upload build application files
-    - uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v3
       with:
         name: publish
         path: ./artifact
@@ -52,7 +56,7 @@ jobs:
       run: aws s3 rm s3://ddt-build-files/aws-test-app/${ENV_NAME} --recursive --exclude "*" --include "*.zip"
     
     - name: Upload zip file to S3 bucket
-      run: aws s3 cp ./artifact/publish.zip s3://ddt-build-files/aws-test-app/${ENV_NAME}/lambda-${{ github.run_number }}.zip
+      run: aws s3 cp ./artifact/publish.zip s3://ddt-build-files/aws-test-app/${ENV_NAME}/publish-${{ github.run_number }}.zip
       
     
   deploy:
@@ -61,7 +65,7 @@ jobs:
 
     steps:  
     - name: Download build application files
-    - uses: actions/download-artifact@v3
+      uses: actions/download-artifact@v3
       with:
         name: publish
         path: artifact
