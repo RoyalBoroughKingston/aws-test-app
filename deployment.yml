@@ -38,6 +38,9 @@ Resources:
     Properties:
       Handler: aws-test-app
       Runtime: dotnet6
+      Environment:
+        Variables:
+          ASPNETCORE_ENVIRONMENT: !Ref EnvironmentName
       CodeUri:
         Bucket: !Ref BucketName
         Key: !Ref Key
