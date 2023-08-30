@@ -82,6 +82,6 @@ jobs:
       with:
         name: aws-test-app-stack
         template: artifact/deployment.yml
-        parameter-overrides: EnvironmentName=${ENV_NAME}, BucketName='ddt-build-files', Key='aws-test-app/${ENV_NAME}/${{ format('publish-{0}.zip', github.run_number ) }}'
+        parameter-overrides: EnvironmentName=${ENV_NAME}, BucketName=ddt-build-files, Key=aws-test-app/${ENV_NAME}/${{ format('publish-{0}.zip', github.run_number ) }}
         capabilities: CAPABILITY_IAM, CAPABILITY_AUTO_EXPAND
         no-fail-on-empty-changeset: "1"
