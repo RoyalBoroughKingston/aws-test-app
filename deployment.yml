@@ -17,10 +17,6 @@ Parameters:
     Type: String
     Default: 'aws-test-app/development/lambda.zip'
 
-  S3Path:
-    Type: String
-    Default: 'ddt-build-files/aws-test-app/development/lambda.zip'
-
 Resources:
   AspNetCoreIamRole:
     Type: AWS::IAM::Role
@@ -45,7 +41,9 @@ Resources:
       Environment:
         Variables:
           ASPNETCORE_ENVIRONMENT: !Ref EnvironmentName
-      CodeUri: !Ref S3Path
+      CodeUri:
+        Bucket: !Ref BucketName
+        Key: !Ref Key
       MemorySize: 256
       Timeout: 30
       Role: !GetAtt AspNetCoreIamRole.Arn
