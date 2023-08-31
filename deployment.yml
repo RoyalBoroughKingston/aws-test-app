@@ -36,6 +36,7 @@ Resources:
   AspNetCoreFunction:
     Type: AWS::Serverless::Function
     Properties:
+      FunctionName: !Sub "aws-test-app-${EnvironmentName}"
       Handler: aws-test-app
       Runtime: dotnet6
       Environment:
