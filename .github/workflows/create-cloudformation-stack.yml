@@ -11,7 +11,7 @@ permissions:
   contents: read  # This is required for actions / checkout
 
 env:
-  ENV_NAME: ${{ github.ref == 'refs/heads/develop' && 'Development' || 'Production' }}
+  ENV_NAME: ${{ github.ref == 'refs/heads/develop' && 'development' || 'production' }}
 
 jobs:
   build:

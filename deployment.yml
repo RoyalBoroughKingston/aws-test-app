@@ -17,6 +17,10 @@ Parameters:
     Type: String
     Default: 'aws-test-app/development/lambda.zip'
 
+Conditions:
+  IsDevelopment: !Equals [!Ref EnvironmentName, 'development']
+  IsProduction: !Equals [!Ref EnvironmentName, 'production']
+
 Resources:
   AspNetCoreIamRole:
     Type: AWS::IAM::Role
@@ -33,15 +37,16 @@ Resources:
       ManagedPolicyArns:
       - arn:aws:iam::aws:policy/AWSLambda_FullAccess
              
-  AspNetCoreFunction:
+  DevelopmentFunction:
+    Condition: IsDevelopment
     Type: AWS::Serverless::Function
     Properties:
-      FunctionName: !Sub "aws-test-app-${EnvironmentName}"
+      FunctionName: aws-test-app-development
       Handler: aws-test-app
       Runtime: dotnet6
       Environment:
         Variables:
-          ASPNETCORE_ENVIRONMENT: !Ref EnvironmentName
+          ASPNETCORE_ENVIRONMENT: Development
       CodeUri:
         Bucket: !Ref BucketName
         Key: !Ref Key
@@ -59,6 +64,35 @@ Resources:
           Properties:
             Path: "/"
             Method: ANY
+
+  ProductionFunction:
+    Condition: IsProduction
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: aws-test-app-production
+      Handler: aws-test-app
+      Runtime: dotnet6
+      Environment:
+        Variables:
+          ASPNETCORE_ENVIRONMENT: Production
+      CodeUri:
+        Bucket: !Ref BucketName
+        Key: !Ref Key
+      MemorySize: 256
+      Timeout: 30
+      Role: !GetAtt AspNetCoreIamRole.Arn
+      Events:
+        ProxyResource:
+          Type: Api
+          Properties:
+            Path: "/{proxy+}"
+            Method: ANY
+        RootResource:
+          Type: Api
+          Properties:
+            Path: "/"
+            Method: ANY
+
 Outputs:
   ApiURL:
     Description: API endpoint
