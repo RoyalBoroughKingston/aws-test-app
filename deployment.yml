@@ -54,16 +54,11 @@ Resources:
       Timeout: 30
       Role: !GetAtt AspNetCoreIamRole.Arn
       Events:
-        ProxyResource:
+        MyApiEvent:
           Type: Api
           Properties:
-            Path: "/{proxy+}"
-            Method: ANY
-        RootResource:
-          Type: Api
-          Properties:
-            Path: "/"
-            Method: ANY
+            Path: /dev
+            Method: GET
 
   ProductionFunction:
     Condition: IsProduction
@@ -82,19 +77,17 @@ Resources:
       Timeout: 30
       Role: !GetAtt AspNetCoreIamRole.Arn
       Events:
-        ProxyResource:
+        MyApiEvent:
           Type: Api
           Properties:
-            Path: "/{proxy+}"
-            Method: ANY
-        RootResource:
-          Type: Api
-          Properties:
-            Path: "/"
-            Method: ANY
+            Path: /prod
+            Method: GET
 
 Outputs:
-  ApiURL:
-    Description: API endpoint
-    Value:
-      Fn::Sub: https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/${EnvironmentName}/
+  ApiURLDevelopment:
+    Description: API URL for development environment
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/dev/"
+
+  ApiURLProduction:
+    Description: API URL for production environment
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/prod/"
